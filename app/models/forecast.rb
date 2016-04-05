@@ -1,6 +1,5 @@
 class Forecast < ActiveRecord::Base
   belongs_to :location
-  #before_update :update_history
 
   private
 

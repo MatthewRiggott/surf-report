@@ -1,5 +1,6 @@
 class LocationSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :name, :state, :id, :url, :latitude, :longitude
 
+  has_many :forecasts
 
 end

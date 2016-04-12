@@ -16,24 +16,30 @@ class MswApi
   def update_forecast()
     forecast = Forecast.find_or_create_by(location: @location)
     response = Net::HTTP.get_response(location_url())
-    sleep 1
 
-    if response.message == "OK"
+    if response.message == "OK" && can_update?()
       puts "HTTP response OK"
       puts "updated today - #{!can_update?}"
       if can_update?
         raw_data = JSON.parse(response.body)
         new_forecast = updated_forecast_data(raw_data)
-        if Forecast.update(new_forecast.keys, new_forecast.values)
-          puts "#{@location.name} updated"
+
+        Forecast.transaction do
+          Forecast.update_history(@location)
+          Forecast.update(new_forecast.keys, new_forecast.values)
+          @location.update(forecast_updated_at: Time.now)
+        end
+
+        if @location.forecast_updated_at.try(:to_date) == Date.today
+          puts "#{@location.name} has been updated"
           return true
         else
           puts "#{@location.name} failed to update"
           return false
         end
-      end
+
     else
-      puts "HTTP response bad - #{response.message}"
+      puts "HTTP response - #{response.message}"
       return false
     end
   end
@@ -42,12 +48,8 @@ class MswApi
 
   def can_update?()
     # have we already updated this location today?
-    todays_cast = Forecast.find_by(location: @location, day: 0, time: 8)
-    if todays_cast.max_height.nil?
-      true
-    else
-      !(Date.today == todays_cast.updated_at.to_date)
-    end
+    last_update = @location.forecast_updated_at
+    !(Date.today == last_update.try(:to_date))
   end
 
   def location_url()

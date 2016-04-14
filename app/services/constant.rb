@@ -200,7 +200,7 @@ end
 #       "latitude": 0,
 #       "longitude": 0
 #     },
-#     "Green Harbor": {
+#     "Green Harbor":
 #       "latitude": 0,
 #       "longitude": 0
 #     },

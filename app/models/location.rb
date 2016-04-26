@@ -1,12 +1,12 @@
 class Location < ActiveRecord::Base
   has_many :forecasts
 
-  def attributes
-    {"id" => self.id, "name" => self.name, "state" => self.state, "lat_lon" => pretty_coordinates, "url" => self.url}
-  end
+  # def attributes
+  #   {"id" => self.id, "name" => self.name, "state" => self.state, "lat_lon" => pretty_coordinates, "url" => self.url}
+  # end
 
   def self.create_json(api_input_fields)
-    fields = api_input_fields.split "," unless api_input_fields.blank?
+    fields = api_input_fields.split(",") unless api_input_fields.blank?
     result = {}
     if fields.nil?
       return { "locations" => "valid fields are #{api_fields.to_s}"}
@@ -31,11 +31,11 @@ class Location < ActiveRecord::Base
     ["id", "name", "state", "lat_lon", "url"]
   end
 
-  def pretty_coordinates
-    if self.latitude && self.longitude
-      "#{self.latitude},#{self.longitude}"
-    else
-      nil
-    end
-  end
+  # def pretty_coordinates
+  #   if self.latitude && self.longitude
+  #     "#{self.latitude},#{self.longitude}"
+  #   else
+  #     nil
+  #   end
+  # end
 end

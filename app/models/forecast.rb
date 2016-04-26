@@ -1,6 +1,29 @@
 class Forecast < ActiveRecord::Base
   belongs_to :location
-  attr_reader :est_datetime
+
+  def attributes
+    {
+      "date" => (self.location.updated_at + self.day.days + self.time.hours).to_f,
+      "faded_rating" => self.faded_stars,
+      "solid_rating" => self.solid_stars,
+      "period" => self.period,
+      "max_height" => self.max_height,
+      "min_height" => self.min_height
+    }
+  end
+
+  def self.forecast_array(location, start_day, end_day)
+
+    start_day = start_day.nil? ? -3 : start_day.to_i
+    forecasts = location.forecasts.where("day >= ? AND day <= ?", start_day, end_day)
+    forecasts = forecasts.order(:day, :time).to_a
+    {
+      beach_name: location.name,
+      beach_id: location.id,
+      forecast_url: location.url,
+      forecast: forecasts
+    }
+  end
 
   def est_datetime
     (Time.now.utc.to_date + self.day.days) + Time.parse("#{self.hour_casted}:00").seconds_since_midnight.seconds
@@ -27,4 +50,5 @@ class Forecast < ActiveRecord::Base
       faded_stars: self.faded_stars
     }
   end
+
 end

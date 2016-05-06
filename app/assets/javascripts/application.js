@@ -14,3 +14,20 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+$( document ).ready(function() {
+    console.log( "ready!" );
+});
+function retrieveForecastsByRating(){
+  var min_rating = $("#minimum_rating")
+
+}
+
+$('select').on('change', function(){
+  alert(this.value);
+  $.ajax({ type: "GET",
+     url: "/items",
+     data: { sort: $('option:selected', this).val() }
+  }).done(function(data) {
+    console.log(data);
+  });
+});

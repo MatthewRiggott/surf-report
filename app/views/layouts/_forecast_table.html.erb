@@ -1,0 +1,21 @@
+<head>
+  <title>Forecast Information</title>
+</head>
+<body>
+  <table border="1" cellpadding="5" cellspacing="5">
+    <tr>
+      <% Forecast.display_attributes[:printable].each do |category| %>
+        <th><%= category %></th>
+      <% end %>
+    </tr>
+
+    <tr>
+      <% forecasts.each do |forecast| %>
+        <% Forecast.display_attributes[:method_fields].each do |method| %>
+          <td><%= forecast.send(method) %></td>
+        <% end %>
+      <% end %>
+    </tr>
+  </table>
+</body>
+

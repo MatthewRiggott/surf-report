@@ -3,7 +3,7 @@
 </div>
 <br>
 <br>
-
+<% binding.pry %>
 <span class="filter_box">
   <%= form_tag forecasts_path, method: 'get' do %>
     Minimum Rating to Display:
@@ -15,7 +15,7 @@
 <br>
 <br>
 <% if @forecast.present? %>
-  <%= render partial: 'layouts/forecast_table.html.erb', locals: {forecasts: @forecast} %>
+  <%= render partial: 'layouts/forecast_table.html.erb', locals: {forecast: @forecast} %>
 <% else %>
   No forecast data available that meets the criteria
 <% end %>

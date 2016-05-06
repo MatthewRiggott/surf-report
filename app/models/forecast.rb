@@ -1,6 +1,14 @@
 class Forecast < ActiveRecord::Base
   belongs_to :location
 
+  def name
+    self.location.name
+  end
+
+  def url
+    self.location.name
+  end
+
   def attributes
     {
       "date" => (self.location.updated_at + self.day.days + self.time.hours).to_f,
@@ -10,6 +18,14 @@ class Forecast < ActiveRecord::Base
       "max_height" => self.max_height,
       "min_height" => self.min_height
     }
+  end
+
+  def self.ratings_range
+    [0,1,2,3,4,5,"Best"]
+  end
+
+  def self.filter_data(day: 0, min_rating: 3)
+    Forecast.where("day = ? AND solid_stars = ?", day, min_rating)
   end
 
   def self.forecast_array(location, start_day, end_day)
@@ -39,6 +55,28 @@ class Forecast < ActiveRecord::Base
       )
       forecast.update(future_cast.updateable_attributes)
     end
+  end
+
+  def self.display_attributes
+    { printable: [
+        "Name",
+        "Max Height",
+        "Min Height",
+        "Faded Star Rating",
+        "Solid Star Rating",
+        "Period",
+        "URL Link"
+      ],
+      method_fields: [
+        :name,
+        :max_height,
+        :min_height,
+        :solid_stars,
+        :faded_stars,
+        :period,
+        :url
+      ]
+    }
   end
 
   def updateable_attributes

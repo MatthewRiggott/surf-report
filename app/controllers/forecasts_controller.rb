@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+class ForecastsController < ApplicationController
 
   def index
     @defaults = default_values
@@ -19,4 +19,5 @@ class HomeController < ApplicationController
     filter_values[:min_rating] = params["min_rating"] if params["min_rating"]
     filter_values
   end
+
 end

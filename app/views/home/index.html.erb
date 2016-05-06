@@ -5,7 +5,7 @@
 <br>
 
 <span class="filter_box">
-  <%= form_tag forecasts_path, method: 'get' do %>
+  <%= form_tag root_path, method: 'get' do %>
     Minimum Rating to Display:
     <%= select_tag :min_rating, options_for_select(Forecast.ratings_range, @defaults[:min_rating]), onchange: "retrieveForecastsByRating();" %>
     <%= submit_tag 'filter' %>

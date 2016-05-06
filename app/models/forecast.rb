@@ -1,12 +1,20 @@
 class Forecast < ActiveRecord::Base
-  belongs_to :location
+  belongs_to :location, -> {order(name: :asc)}
 
   def name
     self.location.name
   end
 
+  def display_time
+    if time == 8
+      "8:00AM"
+    else
+      "2:00PM"
+    end
+  end
+
   def url
-    self.location.name
+    self.location.url
   end
 
   def attributes
@@ -24,8 +32,8 @@ class Forecast < ActiveRecord::Base
     [0,1,2,3,4,5,"Best"]
   end
 
-  def self.filter_data(day: 0, min_rating: 3)
-    Forecast.where("day = ? AND solid_stars = ?", day, min_rating)
+  def self.filter_data(filter_criteria: "solid_stars", day: 0, min_rating: 3)
+    Forecast.where("day = ? AND #{filter_criteria} >= ?", day, min_rating)
   end
 
   def self.forecast_array(location, start_day, end_day)
@@ -60,21 +68,21 @@ class Forecast < ActiveRecord::Base
   def self.display_attributes
     { printable: [
         "Name",
+        "Time",
         "Max Height",
         "Min Height",
         "Faded Star Rating",
         "Solid Star Rating",
-        "Period",
-        "URL Link"
+        "Period"
       ],
       method_fields: [
         :name,
+        :display_time,
         :max_height,
         :min_height,
-        :solid_stars,
         :faded_stars,
-        :period,
-        :url
+        :solid_stars,
+        :period
       ]
     }
   end

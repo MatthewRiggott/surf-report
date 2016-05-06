@@ -2,7 +2,9 @@
   <title>Forecast Information</title>
 </head>
 <body>
+
   <table border="1" cellpadding="5" cellspacing="5">
+    <a href="http://magicseaweed.com"><img src="https://magicseaweed.com/image/msw_powered_by.png"></a>
     <tr>
       <% Forecast.display_attributes[:printable].each do |category| %>
         <th><%= category %></th>
@@ -11,9 +13,17 @@
 
     <tr>
       <% forecasts.each do |forecast| %>
-        <% Forecast.display_attributes[:method_fields].each do |method| %>
-          <td><%= forecast.send(method) %></td>
-        <% end %>
+        <tr>
+          <% Forecast.display_attributes[:method_fields].each do |method| %>
+            <td>
+              <% if method == :name %>
+                <%= link_to forecast.send(method), forecast.location.url %>
+              <% else %>
+                <%= forecast.send(method) %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
       <% end %>
     </tr>
   </table>

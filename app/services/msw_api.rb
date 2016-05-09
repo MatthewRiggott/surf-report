@@ -66,8 +66,8 @@ class MswApi
         period = api_data["swell"]["components"]["primary"]["period"]
         min_height = api_data["swell"]["absMinBreakingHeight"]
         max_height = api_data["swell"]["absMaxBreakingHeight"]
-        faded_rating = api_data["fadedRating"]
         solid_rating = api_data["solidRating"]
+        faded_rating = api_data["fadedRating"] + api_data["solidRating"]
         day = cast_time.to_date.mjd - Time.now.utc.to_date.mjd
 
         if day >= 0

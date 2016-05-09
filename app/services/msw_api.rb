@@ -60,7 +60,8 @@ class MswApi
     forecast.each do |api_data|
       cast_time = Time.at(api_data["timestamp"])
       hour_casted = cast_time.hour
-      # take two forecasts per day
+      # TODO take two forecasts per day - single responsibility principal says this
+      # should not have to look at the time, its job is simply to fetch data
       if (hour_casted > 6 && hour_casted <= 9) || (hour_casted > 12 && hour_casted <= 15)
         hour_casted = (hour_casted > 6 && hour_casted <= 9) ? 8 : 14
         period = api_data["swell"]["components"]["primary"]["period"]
@@ -69,7 +70,6 @@ class MswApi
         solid_rating = api_data["solidRating"]
         faded_rating = api_data["fadedRating"] + api_data["solidRating"]
         day = cast_time.to_date.mjd - Time.now.utc.to_date.mjd
-
         if day >= 0
           forecast_id = Forecast.find_by(location: @location, day: day, time: hour_casted).id
           forecast_from_api[forecast_id] = {

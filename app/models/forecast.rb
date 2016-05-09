@@ -7,9 +7,9 @@ class Forecast < ActiveRecord::Base
 
   def display_time
     if time == 8
-      "8:00AM"
+      "8:00 AM"
     else
-      "2:00PM"
+      "2:00 PM"
     end
   end
 
@@ -34,6 +34,11 @@ class Forecast < ActiveRecord::Base
 
   def self.filter_data(filter_criteria: "solid_stars", day: 0, min_rating: 3)
     Forecast.where("day = ? AND #{filter_criteria} >= ?", day, min_rating)
+  end
+
+  def self.surf_of_the_day(day)
+    best_rating = Forecast.all.pluck(:solid_stars).max
+    Forecast.where("day = ? AND solid_stars = ?", day, best_rating)
   end
 
   def self.forecast_array(location, start_day, end_day)

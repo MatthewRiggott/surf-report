@@ -4,7 +4,12 @@ class ForecastsController < ApplicationController
     @defaults = default_values
     @defaults[:day] = params["day"] if params["day"]
     @defaults[:min_rating] = params["min_rating"] if params["min_rating"]
-    @forecast = Forecast.filter_data(filter_params)
+    if filter_params["min_rating"] == "Best"
+      binding.pry
+      @forecast = Forecast.self.surf_of_the_day(filter_params)
+    else
+      @forecast = Forecast.filter_data(filter_params)
+    end
   end
 
   private

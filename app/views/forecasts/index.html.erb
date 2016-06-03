@@ -2,12 +2,15 @@
   Surfcast Quick Finder
 </div>
 <br>
+Todays Date: <%= Date.today.to_s(:long) %>
 <br>
 
 <span class="filter_box">
   <%= form_tag forecasts_path, method: 'get' do %>
     Minimum Rating to Display:
-    <%= select_tag :min_rating, options_for_select(Forecast.ratings_range, @defaults[:min_rating]), onchange: "retrieveForecastsByRating();" %>
+    <%= select_tag :min_rating, options_for_select(Forecast.ratings_range, @defaults[:min_rating]) %>
+    Date:
+    <%= select_tag :date, options_for_select((0..4).collect{|d| [Date.today + d.days,d]}, @defaults[:day]) %>
     <%= submit_tag 'filter' %>
   <% end %>
 </span>
@@ -15,7 +18,7 @@
 <br>
 <br>
 <% if @forecast.present? %>
-  <%= render partial: 'layouts/forecast_table.html.erb', locals: {forecast: @forecast} %>
+  <%= render partial: 'layouts/forecast_table.html.erb', locals: {forecasts: @forecast} %>
 <% else %>
   No forecast data available that meets the criteria
 <% end %>

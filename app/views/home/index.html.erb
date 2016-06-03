@@ -1,21 +1,10 @@
 <div class="title">
-  Surfcast Quick Finder
+  <h2>Quickly Find the most active surf in New England.</h2>
 </div>
 <br>
 <br>
-
-<span class="filter_box">
-  <%= form_tag root_path, method: 'get' do %>
-    Minimum Rating to Display:
-    <%= select_tag :min_rating, options_for_select(Forecast.ratings_range, @defaults[:min_rating]) %>
-    <%= submit_tag 'filter' %>
-  <% end %>
-</span>
+<p>This site fetches information from MagicSeaWeed's API twice a day and caches it.  Forecast information upto 4 days from now is held as well as the past 3 day history.</p>
 <br>
+<p>Account creation is only necessary for signing up to recieve automated alerts(not yet implemented)</p>
 <br>
-<br>
-<% if @forecast.present? %>
-  <%= render partial: 'layouts/forecast_table.html.erb', locals: {forecasts: @forecast} %>
-<% else %>
-  No forecast data available that meets the criteria
-<% end %>
+<p><%= link_to "Find a beach", forecasts_path %></p>

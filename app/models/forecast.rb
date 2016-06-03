@@ -37,7 +37,7 @@ class Forecast < ActiveRecord::Base
   end
 
   def self.surf_of_the_day(day)
-    best_rating = Forecast.all.pluck(:solid_stars).max
+    best_rating = Forecast.where(day: day).pluck(:solid_stars).max
     Forecast.where("day = ? AND solid_stars = ?", day, best_rating)
   end
 

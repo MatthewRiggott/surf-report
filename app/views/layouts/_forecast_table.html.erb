@@ -7,7 +7,7 @@
     <a href="http://magicseaweed.com"><img src="https://magicseaweed.com/image/msw_powered_by.png"></a>
     <tr>
       <% Forecast.display_attributes[:printable].each do |category| %>
-        <th><%= category %></th>
+        <th colspan="2"><%= category %></th>
       <% end %>
     </tr>
 
@@ -17,7 +17,7 @@
           <% Forecast.display_attributes[:method_fields].each do |method| %>
             <td>
               <% if method == :name %>
-                <%= link_to forecast.send(method), forecast.location.url %>
+                <%= link_to forecast.send(method), location_path(forecast.location) %>
               <% else %>
                 <%= forecast.send(method) %>
               <% end %>

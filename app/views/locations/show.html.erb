@@ -1,0 +1,42 @@
+
+
+<body>
+  <h1><%= @location.name %></h1>
+  <br>
+  <%= link_to 'For more information visit MagicSeaWeed', @location.url %>
+  <br><br>
+  <table border="1" cellpadding="5" cellspacing="5">
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Rating</th>
+      <th>Min Height</th>
+      <th>Max Height</th>
+      <th>Period</th>
+    </tr>
+
+    <% (-3..4).each do |day_diff| %>
+      <tr>
+        <td rowspan="2"><%= Date.today + day_diff %></td>
+
+        <% [8,14].each do |time| %>
+          <% if time == 14 %>
+            <tr>
+          <% end %>
+          <% forecast = Forecast.find_by(day: day_diff, time: time) %>
+          <% if forecast %>
+            <td><%= forecast.display_time %></td>
+            <td><%= forecast.solid_stars %></td>
+            <td><%= forecast.min_height %></td>
+            <td><%= forecast.max_height %></td>
+            <td><%= forecast.period %></td>
+          <% end %>
+          </tr>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+
+
+    <a href="http://magicseaweed.com"><img src="https://magicseaweed.com/image/msw_powered_by.png"></a>
+</body>

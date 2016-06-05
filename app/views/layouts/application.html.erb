@@ -9,7 +9,14 @@
 <body>
 <div class="top-bar">
   <div class="app-name">Surf Report</div>
-  <div class="login-txt"><%= link_to "Log in", new_user_session_path %></div>
+  <div class="login-txt" style="display: none;">
+
+  <% if user_signed_in? %>
+    <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
+  <% else %>
+    <%= link_to "Log in", new_user_session_path %>
+    <% end %>
+  </div>
 </div>
 <div class="content-margins">
   <%= yield %>

@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable
   after_create :send_welcome_mail
 
+  belongs_to :alert
+
   private
 
   def send_welcome_mail

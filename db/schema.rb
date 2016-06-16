@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525184517) do
+ActiveRecord::Schema.define(version: 20160612044130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alerts", force: :cascade do |t|
+    t.boolean "sunday"
+    t.boolean "monday"
+    t.boolean "tuesday"
+    t.boolean "wednesday"
+    t.boolean "thursday"
+    t.boolean "friday"
+    t.boolean "saturday"
+    t.integer "alert_states"
+  end
 
   create_table "forecasts", force: :cascade do |t|
     t.integer  "location_id"
@@ -70,6 +81,7 @@ ActiveRecord::Schema.define(version: 20160525184517) do
     t.boolean  "is_active",              default: false, null: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.integer  "alert_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

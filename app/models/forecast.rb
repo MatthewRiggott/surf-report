@@ -32,6 +32,20 @@ class Forecast < ActiveRecord::Base
     [0,1,2,3,4,5,"Best"]
   end
 
+  def self.best_casts
+    result = Hash.new()
+    Location.all_states.each do |state|
+      (0..4).each do |day|
+        result[state] ||= []
+        forecast = self.joins(:location).where(day: day, locations: {state: state} ).order(solid_stars: :DESC, faded_stars: :DESC).first
+        if !forecast.blank?
+          result[state][day] = forecast
+        end
+      end
+    end
+    result
+  end
+
   def self.filter_data(filter_criteria: "solid_stars", day: 0, min_rating: 3)
     Forecast.where("day = ? AND #{filter_criteria} >= ?", day, min_rating)
   end

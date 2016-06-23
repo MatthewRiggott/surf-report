@@ -4,6 +4,9 @@ class Location < ActiveRecord::Base
   # def attributes
   #   {"id" => self.id, "name" => self.name, "state" => self.state, "lat_lon" => pretty_coordinates, "url" => self.url}
   # end
+  def self.all_states
+    self.uniq.pluck(:state)
+  end
 
   def self.create_json(api_input_fields)
     fields = api_input_fields.split(",") unless api_input_fields.blank?

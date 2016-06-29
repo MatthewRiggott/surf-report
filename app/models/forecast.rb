@@ -37,9 +37,11 @@ class Forecast < ActiveRecord::Base
     Location.all_states.each do |state|
       (0..4).each do |day|
         result[state] ||= []
-        forecast = self.joins(:location).where(day: day, locations: {state: state} ).order(solid_stars: :DESC, faded_stars: :DESC).first
-        if !forecast.blank?
-          result[state][day] = forecast
+        early_forecasts = self.joins(:location).where(day: day, time: 8, locations: {state: state} ).order(solid_stars: :DESC, faded_stars: :DESC, max_height: :DESC)
+        later_forecasts = self.joins(:location).where(day: day, time: 14, locations: {state: state} ).order(solid_stars: :DESC, faded_stars: :DESC, max_height: :DESC)
+        location = rank_cast(early_forecasts, later_forecasts)
+        if location
+          result[state][day] = {location
         end
       end
     end
@@ -114,6 +116,15 @@ class Forecast < ActiveRecord::Base
       solid_stars: self.solid_stars,
       faded_stars: self.faded_stars
     }
+  end
+
+  private
+
+  def self.rank_cast(morning, afternoon)
+    rank_hash = {}
+    morning.pluck(:location_id).each_with_index { |f,i| rank_hash[f] = i}
+    afternoon.pluck(:location_id).each_with_index { |f,i| rank_hash[f] += i}
+    location = rank_hash.sort_by{|k,v| v}[0][0]
   end
 
 end

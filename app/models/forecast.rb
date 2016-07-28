@@ -39,14 +39,18 @@ class Forecast < ActiveRecord::Base
         result[state] ||= []
         early_forecasts = self.joins(:location).where(day: day, time: 8, locations: {state: state} ).order(solid_stars: :DESC, faded_stars: :DESC, max_height: :DESC)
         later_forecasts = self.joins(:location).where(day: day, time: 14, locations: {state: state} ).order(solid_stars: :DESC, faded_stars: :DESC, max_height: :DESC)
-        location = rank_cast(early_forecasts, later_forecasts)
-        if location
-          result[state][day] = {location
+        location_id = rank_cast(early_forecasts, later_forecasts)
+        if location_id
+          am = early_forecasts.find_by(location_id: location_id)
+          pm = later_forecasts.find_by(location_id: location_id)
+          result[state][day] = {location: Location.find(location_id), am: am, pm: pm}
         end
       end
     end
     result
   end
+
+  ## TODO - Filtering Service Object / clean model up
 
   def self.filter_data(filter_criteria: "solid_stars", day: 0, min_rating: 3)
     Forecast.where("day = ? AND #{filter_criteria} >= ?", day, min_rating)

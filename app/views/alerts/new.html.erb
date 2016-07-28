@@ -1,0 +1,46 @@
+<%= form_tag alerts_path, method: :post do %>
+
+  <div class="field">
+    <%= radio_button_tag :alert, "daily" %>
+    <%= label_tag :alert_daily, "Daily" %>
+    <%= radio_button_tag :alert, "weekend" %>
+    <%= label_tag :alert_weekend, "Weekend" %>
+  </div>
+
+  <div class="field">
+    <%= number_field_tag :min_rating, "Minimum", min: 0, max: 5, step: 1, value: 3 %>
+    <%= label :min_rating_value, "Minimum Rating for Notification" %>
+  </div>
+
+  <div class="field">
+    <%= check_box_tag :monday, "Monday", selected: true  %><%= label_tag "Monday"%>
+  </div>
+
+  <div class="field">
+    <%= check_box_tag :tuesday, "Tuesday" %><%= label_tag "Tuesday" %>
+  </div>
+  <div class="field">
+    <%= check_box_tag :wednesday, "Wednesday" %><%= label_tag "Wednesday"  %>
+  </div>
+  <div class="field">
+    <%= check_box_tag :thursday, "Thursday" %><%= label_tag "Thursday"  %>
+  </div>
+  <div class="field">
+    <%= check_box_tag :friday, "Friday", selected: true %><%= label_tag "Friday"  %>
+  </div>
+  <div class="field">
+    <%= check_box_tag :saturday, "Saturday", selected: true  %><%= label_tag "Saturday"  %>
+  </div>
+  <div class="field">
+    <%= check_box_tag :sunday, "Sunday", selected: true  %><%= label_tag "Sunday"  %>
+  </div>
+
+  <div class="field">
+    <%= submit_tag %>
+  </div>
+
+<% end %>
+
+<div class="field">
+  <%= link_to "Back", :back %>
+</div>

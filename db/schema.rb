@@ -1,4 +1,4 @@
-  # encoding: UTF-8
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,10 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160612044130) do
+ActiveRecord::Schema.define(version: 20160801002653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alert_states", force: :cascade do |t|
+    t.integer "alert_id"
+    t.integer "state_id"
+  end
 
   create_table "alerts", force: :cascade do |t|
     t.boolean "sunday"
@@ -45,7 +50,6 @@ ActiveRecord::Schema.define(version: 20160612044130) do
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
-    t.string   "state"
     t.string   "latitude"
     t.string   "longitude"
     t.integer  "msw_id"
@@ -53,11 +57,17 @@ ActiveRecord::Schema.define(version: 20160612044130) do
     t.datetime "updated_at",          null: false
     t.string   "url"
     t.datetime "forecast_updated_at"
+    t.integer  "state_id"
   end
 
   add_index "locations", ["msw_id"], name: "index_locations_on_msw_id", unique: true, using: :btree
-  add_index "locations", ["name", "state"], name: "index_locations_on_name_and_state", unique: true, using: :btree
   add_index "locations", ["url"], name: "index_locations_on_url", unique: true, using: :btree
+
+  create_table "states", force: :cascade do |t|
+    t.string "name"
+  end
+
+  add_index "states", ["name"], name: "index_states_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   default: "",    null: false
